@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,9 +31,8 @@ class MainActivity : ComponentActivity() {
                     ) {
                         ClickButton(
                             modifier = Modifier
-                                .padding(top = 175.dp)
+                                .padding(top = 100.dp)
                                 .size(250.dp)
-                                .border(1.5.dp, Color.Black)
                         )
                     }
                 }
