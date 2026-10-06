@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Моё первое приложение</string>
+
+    <string name="money_per_click">За клик: %1$s</string>
+    <string name="cooldown_label">Перезарядка: %1$.2fс</string>
+    <string name="upgrades_button">Прокачки</string>
+
+    <string name="upgrades_title">Прокачки</string>
+    <string name="money_label">Деньги: %1$s</string>
+    <string name="upgrade_level_cost">Уровень: %1$d  •  Цена: %2$d$</string>
+    <string name="buy_button">Купить</string>
+
+    <string name="upgrade_add_per_click_name">+1 монет за клик</string>
+    <string name="upgrade_add_per_click_desc">
+        Увеличивает основной доход за клик на +1
+    </string>
+
+    <string name="upgrade_multiply_per_click_name">x1.5 монет за клик</string>
+    <string name="upgrade_multiply_per_click_desc">
+        Увеличивает весь доход в 1.5 раз
+    </string>
+
+    <string name="upgrade_reduce_cooldown_name">-0.05s перезарядка</string>
+    <string name="upgrade_reduce_cooldown_desc">
+        Уменьшает время перезарядки между кликами на 0.05 секунд
+    </string>
+</resources>
