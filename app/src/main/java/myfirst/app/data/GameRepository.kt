@@ -9,26 +9,7 @@ class GameRepository(private val dao: GameDao) {
     suspend fun getState(): GameStateEntity =
         dao.getState() ?: GameStateEntity()
 
-    suspend fun save(
-        money: Float,
-        basePerClick: Float,
-        multiplier: Float,
-        cooldownMs: Long,
-        addPerClickLevel: Int,
-        multiplyPerClickLevel: Int,
-        reduceCooldownLevel: Int
-    ) {
-        dao.saveState(
-            GameStateEntity(
-                id = 1,
-                money = money,
-                basePerClick = basePerClick,
-                multiplier = multiplier,
-                cooldownMs = cooldownMs,
-                addPerClickLevel = addPerClickLevel,
-                multiplyPerClickLevel = multiplyPerClickLevel,
-                reduceCooldownLevel = reduceCooldownLevel
-            )
-        )
+    suspend fun save(state: GameStateEntity) {
+        dao.saveState(state.copy(id = 1))
     }
 }

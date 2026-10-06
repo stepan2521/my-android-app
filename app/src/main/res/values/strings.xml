@@ -3,20 +3,30 @@
     <string name="app_name">My First App</string>
 
     <string name="money_per_click">Per click: %1$s</string>
-    <string name="cooldown_label">Cooldown: %1$.2fс</string>
+    <string name="cooldown_label">Cooldown: %1$.2fs</string>
+    <string name="crit_chance_label">Crit chance: %1$.0f%%</string>
+    <string name="long_press_label">Hold: x%1$.1f</string>
     <string name="upgrades_button">Upgrades</string>
 
     <string name="upgrades_title">Upgrades</string>
     <string name="money_label">Money: %1$s</string>
-    <string name="upgrade_level_cost">Level: %1$d  •  Cost: %2$d$</string>
+    <string name="upgrade_level_cost">Level: %1$d  •  Cost: %2$s</string>
     <string name="buy_button">Buy</string>
 
     <string name="upgrade_add_per_click_name">+1 Money per click</string>
-    <string name="upgrade_add_per_click_desc">Increases main income per click by +1</string>
+    <string name="upgrade_add_per_click_desc">Increases base income per click by +1</string>
 
     <string name="upgrade_multiply_per_click_name">x1.5 Money per click</string>
-    <string name="upgrade_multiply_per_click_desc">Multiplying all income by x1.5</string>
+    <string name="upgrade_multiply_per_click_desc">Multiplies all click income by 1.5</string>
 
     <string name="upgrade_reduce_cooldown_name">-0.05s Cooldown</string>
-    <string name="upgrade_reduce_cooldown_desc">Reduces cooldown per clicks for 0.05 seconds</string>
+    <string name="upgrade_reduce_cooldown_desc">Reduces delay between clicks by 0.05 seconds</string>
+
+    <string name="upgrade_crit_chance_name">+2% Crit chance</string>
+    <string name="upgrade_crit_chance_desc">Increases chance of critical hit (x2) by 2%</string>
+
+    <string name="upgrade_long_press_name">+0.5x Hold bonus</string>
+    <string name="upgrade_long_press_desc">Increases long-press multiplier by 0.5</string>
+
+    <string name="hint_hold">Hold the button for a stronger hit</string>
 </resources>

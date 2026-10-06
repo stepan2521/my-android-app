@@ -4,25 +4,29 @@
 
     <string name="money_per_click">За клик: %1$s</string>
     <string name="cooldown_label">Перезарядка: %1$.2fс</string>
+    <string name="crit_chance_label">Крит-шанс: %1$.0f%%</string>
+    <string name="long_press_label">Зажатие: x%1$.1f</string>
     <string name="upgrades_button">Прокачки</string>
 
     <string name="upgrades_title">Прокачки</string>
     <string name="money_label">Деньги: %1$s</string>
-    <string name="upgrade_level_cost">Уровень: %1$d  •  Цена: %2$d$</string>
+    <string name="upgrade_level_cost">Уровень: %1$d  •  Цена: %2$s</string>
     <string name="buy_button">Купить</string>
 
     <string name="upgrade_add_per_click_name">+1 монет за клик</string>
-    <string name="upgrade_add_per_click_desc">
-        Увеличивает основной доход за клик на +1
-    </string>
+    <string name="upgrade_add_per_click_desc">Увеличивает основной доход за клик на +1</string>
 
     <string name="upgrade_multiply_per_click_name">x1.5 монет за клик</string>
-    <string name="upgrade_multiply_per_click_desc">
-        Увеличивает весь доход в 1.5 раз
-    </string>
+    <string name="upgrade_multiply_per_click_desc">Увеличивает весь доход в 1.5 раза</string>
 
-    <string name="upgrade_reduce_cooldown_name">-0.05s перезарядка</string>
-    <string name="upgrade_reduce_cooldown_desc">
-        Уменьшает время перезарядки между кликами на 0.05 секунд
-    </string>
+    <string name="upgrade_reduce_cooldown_name">-0.05с перезарядка</string>
+    <string name="upgrade_reduce_cooldown_desc">Уменьшает время перезарядки между кликами на 0.05 секунды</string>
+
+    <string name="upgrade_crit_chance_name">+2% крит-шанс</string>
+    <string name="upgrade_crit_chance_desc">Увеличивает шанс критического удара (x2) на 2%</string>
+
+    <string name="upgrade_long_press_name">+0.5x бонус зажатия</string>
+    <string name="upgrade_long_press_desc">Увеличивает множитель долгого зажатия на 0.5</string>
+
+    <string name="hint_hold">Зажми кнопку для более сильного удара</string>
 </resources>

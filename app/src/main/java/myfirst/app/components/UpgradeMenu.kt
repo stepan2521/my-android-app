@@ -28,7 +28,7 @@ import myfirst.app.mechanics.Upgrade
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpgradeMenu(
-    money: Float,
+    money: Double,
     upgrades: List<Upgrade>,
     onBuy: (Upgrade) -> Unit,
     onDismiss: () -> Unit
@@ -106,7 +106,7 @@ private fun UpgradeItem(
                     text = stringResource(
                         R.string.upgrade_level_cost,
                         upgrade.level,
-                        upgrade.getCost()
+                        formatMoney(upgrade.getCost().toDouble())
                     ),
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -122,10 +122,12 @@ private fun UpgradeItem(
     }
 }
 
-private fun formatMoney(value: Float): String {
-    return if (value == value.toInt().toFloat()) {
-        "${value.toInt()}$"
-    } else {
-        String.format("%.1f$", value)
+private fun formatMoney(value: Double): String {
+    return when {
+        value >= 1e12 -> String.format("%.2e$", value)
+        value >= 1e6 -> String.format("%.2fM$", value / 1e6)
+        value >= 1e3 -> String.format("%.1fK$", value / 1e3)
+        value == value.toLong().toDouble() -> "${value.toLong()}$"
+        else -> String.format("%.1f$", value)
     }
 }
