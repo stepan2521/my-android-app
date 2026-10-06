@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -34,12 +35,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import myfirst.app.components.ClickButton
 import myfirst.app.components.UpgradeMenu
 import myfirst.app.data.GameDatabase
 import myfirst.app.data.GameRepository
 import myfirst.app.data.GameStateEntity
+import myfirst.app.debug.DebugBridge
+import myfirst.app.debug.DebugServer
 import myfirst.app.mechanics.Upgrade
 import myfirst.app.ui.theme.MainTheme
 import kotlin.math.max
@@ -83,6 +87,7 @@ fun GameScreen() {
 
     var showUpgrades by remember { mutableStateOf(false) }
     var lastHitInfo by remember { mutableStateOf<String?>(null) }
+    var debugAddress by remember { mutableStateOf<String?>(null) }
 
     val upgrades = remember {
         mutableStateListOf(
@@ -92,6 +97,48 @@ fun GameScreen() {
             Upgrade(UpgradeType.CRIT_CHANCE),
             Upgrade(UpgradeType.LONG_PRESS_POWER)
         )
+    }
+
+    // Debug-сервер только в debug-сборке
+    if (BuildConfig.DEBUG) {
+        DisposableEffect(isLoaded) {
+            if (!isLoaded) {
+                return@DisposableEffect onDispose { }
+            }
+
+            DebugBridge.commandHandler = { raw ->
+                handleDebugCommand(
+                    raw = raw,
+                    getMoney = { money },
+                    setMoney = { money = it },
+                    getBase = { basePerClick },
+                    setBase = { basePerClick = it },
+                    getMultiplier = { multiplier },
+                    setMultiplier = { multiplier = it },
+                    getCooldown = { cooldownMs },
+                    setCooldown = { cooldownMs = it },
+                    getCrit = { critChance },
+                    setCrit = { critChance = it },
+                    getHold = { longPressMultiplier },
+                    setHold = { longPressMultiplier = it }
+                )
+            }
+
+            val server = DebugServer()
+            server.start()
+            val ips = DebugServer.findLocalIpAddresses()
+            debugAddress = if (ips.isNotEmpty()) {
+                ips.joinToString(" | ") { "http://$it:${DebugServer.DEFAULT_PORT}" }
+            } else {
+                "http://127.0.0.1:${DebugServer.DEFAULT_PORT} (emulator?)"
+            }
+
+            onDispose {
+                server.stop()
+                DebugBridge.commandHandler = null
+                debugAddress = null
+            }
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -238,6 +285,16 @@ fun GameScreen() {
             Button(onClick = { showUpgrades = true }) {
                 Text(stringResource(R.string.upgrades_button))
             }
+
+            if (BuildConfig.DEBUG && debugAddress != null) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "DEBUG\n$debugAddress",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.outline
+                )
+            }
         }
 
         if (showUpgrades) {
@@ -272,6 +329,87 @@ fun GameScreen() {
                 onDismiss = { showUpgrades = false }
             )
         }
+    }
+}
+
+private fun handleDebugCommand(
+    raw: String,
+    getMoney: () -> Double,
+    setMoney: (Double) -> Unit,
+    getBase: () -> Double,
+    setBase: (Double) -> Unit,
+    getMultiplier: () -> Double,
+    setMultiplier: (Double) -> Unit,
+    getCooldown: () -> Long,
+    setCooldown: (Long) -> Unit,
+    getCrit: () -> Float,
+    setCrit: (Float) -> Unit,
+    getHold: () -> Float,
+    setHold: (Float) -> Unit
+): String {
+    val parts = raw.trim().split(Regex("\\s+"))
+    if (parts.isEmpty() || parts[0].isBlank()) return "ERROR: empty command"
+
+    fun num(i: Int): Double? = parts.getOrNull(i)?.toDoubleOrNull()
+
+    return when (parts[0].lowercase()) {
+        "help" -> "set|add money|base|multiplier|cooldown|crit|hold ; get state"
+
+        "get" -> {
+            if (parts.getOrNull(1)?.equals("state", true) == true) {
+                buildString {
+                    appendLine("money=${getMoney()}")
+                    appendLine("base=${getBase()}")
+                    appendLine("multiplier=${getMultiplier()}")
+                    appendLine("cooldownMs=${getCooldown()}")
+                    appendLine("crit=${getCrit()}")
+                    appendLine("hold=${getHold()}")
+                }.trimEnd()
+            } else {
+                "ERROR: use 'get state'"
+            }
+        }
+
+        "set" -> {
+            val key = parts.getOrNull(1)?.lowercase()
+            val value = num(2) ?: return "ERROR: set <key> <number>"
+            when (key) {
+                "money" -> {
+                    setMoney(value); "OK money=$value"
+                }
+                "base" -> {
+                    setBase(value); "OK base=$value"
+                }
+                "multiplier" -> {
+                    setMultiplier(value); "OK multiplier=$value"
+                }
+                "cooldown" -> {
+                    setCooldown(value.toLong().coerceAtLeast(0)); "OK cooldownMs=${value.toLong()}"
+                }
+                "crit" -> {
+                    val v = value.toFloat().coerceIn(0f, 1f)
+                    setCrit(v); "OK crit=$v"
+                }
+                "hold" -> {
+                    val v = value.toFloat().coerceAtLeast(1f)
+                    setHold(v); "OK hold=$v"
+                }
+                else -> "ERROR: unknown key '$key'"
+            }
+        }
+
+        "add" -> {
+            val key = parts.getOrNull(1)?.lowercase()
+            val value = num(2) ?: return "ERROR: add money <number>"
+            when (key) {
+                "money" -> {
+                    setMoney(getMoney() + value); "OK money=${getMoney()}"
+                }
+                else -> "ERROR: only 'add money' supported"
+            }
+        }
+
+        else -> "ERROR: unknown command '${parts[0]}'. Try 'help'"
     }
 }
 
