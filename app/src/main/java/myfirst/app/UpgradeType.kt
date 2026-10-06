@@ -1,23 +1,23 @@
 package myfirst.app
 
-enum class UpgradeType {
-    ADD_PER_CLICK(0, null),
-    MULTIPLY_PER_CLICK(1, 20),
-    REDUCE_CLICK_COOLDOWN(2, 50);
-
-    var code: Int
-    var cost: Int
-
-    constructor(code: Int?, cost: Int?) {
-        this.code = code ?: 0
-        this.cost = cost ?: 20
-    }
-
-
-    override fun toString(): String {
-        return when (code) {
-            code -> "Add Per Click"
-            else -> ""
-        }
-    }
+enum class UpgradeType(
+    val baseCost: Int,
+    val displayName: String,
+    val description: String
+) {
+    ADD_PER_CLICK(
+        baseCost = 10,
+        displayName = "+1 Money per click",
+        description = "Увеличивает базовый доход с клика на 1"
+    ),
+    MULTIPLY_PER_CLICK(
+        baseCost = 50,
+        displayName = "x1.5 Money per click",
+        description = "Умножает весь доход с клика на 1.5"
+    ),
+    REDUCE_COOLDOWN(
+        baseCost = 25,
+        displayName = "-0.05s Cooldown",
+        description = "Уменьшает задержку между кликами на 0.05 секунды"
+    );
 }
