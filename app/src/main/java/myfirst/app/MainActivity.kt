@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,7 +63,6 @@ fun GameScreen() {
 
     var showUpgrades by remember { mutableStateOf(false) }
 
-    // Используем SnapshotStateList + замену элемента, чтобы UI обновлялся
     val upgrades = remember {
         mutableStateListOf(
             Upgrade(UpgradeType.ADD_PER_CLICK),
@@ -90,12 +90,12 @@ fun GameScreen() {
             )
 
             Text(
-                text = "За клик: ${formatMoney(moneyPerClick)}",
+                text = stringResource(R.string.money_per_click, formatMoney(moneyPerClick)),
                 style = MaterialTheme.typography.titleMedium
             )
 
             Text(
-                text = "Кулдаун: ${String.format("%.2f", cooldownMs / 1000f)}с",
+                text = stringResource(R.string.cooldown_label, cooldownMs / 1000f),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -111,7 +111,7 @@ fun GameScreen() {
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(onClick = { showUpgrades = true }) {
-                Text("Прокачки")
+                Text(stringResource(R.string.upgrades_button))
             }
         }
 
@@ -124,7 +124,6 @@ fun GameScreen() {
                     if (money >= cost) {
                         money -= cost
 
-                        // Важно: создаём новый объект, чтобы Compose увидел изменение
                         val index = upgrades.indexOf(upgrade)
                         if (index >= 0) {
                             upgrades[index] = upgrade.copy(level = upgrade.level + 1)

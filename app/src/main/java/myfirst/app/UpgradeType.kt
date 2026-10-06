@@ -1,23 +1,25 @@
 package myfirst.app
 
+import androidx.annotation.StringRes
+
 enum class UpgradeType(
     val baseCost: Int,
-    val displayName: String,
-    val description: String
+    @StringRes val nameRes: Int,
+    @StringRes val descriptionRes: Int
 ) {
     ADD_PER_CLICK(
         baseCost = 10,
-        displayName = "+1 Money per click",
-        description = "Увеличивает базовый доход с клика на 1"
+        nameRes = R.string.upgrade_add_per_click_name,
+        descriptionRes = R.string.upgrade_add_per_click_desc
     ),
     MULTIPLY_PER_CLICK(
         baseCost = 50,
-        displayName = "x1.5 Money per click",
-        description = "Умножает весь доход с клика на 1.5"
+        nameRes = R.string.upgrade_multiply_per_click_name,
+        descriptionRes = R.string.upgrade_multiply_per_click_desc
     ),
     REDUCE_COOLDOWN(
         baseCost = 25,
-        displayName = "-0.05s Cooldown",
-        description = "Уменьшает задержку между кликами на 0.05 секунды"
+        nameRes = R.string.upgrade_reduce_cooldown_name,
+        descriptionRes = R.string.upgrade_reduce_cooldown_desc
     );
 }

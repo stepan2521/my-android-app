@@ -19,8 +19,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import myfirst.app.R
 import myfirst.app.mechanics.Upgrade
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +45,7 @@ fun UpgradeMenu(
                 .padding(horizontal = 20.dp, vertical = 8.dp)
         ) {
             Text(
-                text = "Прокачки",
+                text = stringResource(R.string.upgrades_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -51,7 +53,7 @@ fun UpgradeMenu(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "Деньги: ${formatMoney(money)}",
+                text = stringResource(R.string.money_label, formatMoney(money)),
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -91,17 +93,21 @@ private fun UpgradeItem(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = upgrade.name,
+                    text = stringResource(upgrade.type.nameRes),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = upgrade.description,
+                    text = stringResource(upgrade.type.descriptionRes),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Уровень: ${upgrade.level}  •  Цена: ${upgrade.getCost()}$",
+                    text = stringResource(
+                        R.string.upgrade_level_cost,
+                        upgrade.level,
+                        upgrade.getCost()
+                    ),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -110,7 +116,7 @@ private fun UpgradeItem(
                 onClick = onBuy,
                 enabled = canAfford
             ) {
-                Text("Купить")
+                Text(stringResource(R.string.buy_button))
             }
         }
     }
