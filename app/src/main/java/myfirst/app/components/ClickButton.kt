@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 import myfirst.app.ui.theme.Color as AppColor
 
 @Composable
@@ -46,7 +47,7 @@ fun ClickButton(
                     break
                 }
                 progress = 1f - (elapsed.toFloat() / cooldownMs)
-                delay(16)
+                delay(16.milliseconds)
             }
         }
     }

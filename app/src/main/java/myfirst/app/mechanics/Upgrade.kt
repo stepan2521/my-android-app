@@ -1,6 +1,7 @@
 package myfirst.app.mechanics
 
 import myfirst.app.UpgradeType
+import kotlin.math.pow
 
 data class Upgrade(
     val type: UpgradeType,
@@ -12,8 +13,7 @@ data class Upgrade(
     val description: String
         get() = type.description
 
-    /** Стоимость следующей покупки */
     fun getCost(): Int {
-        return (type.baseCost * Math.pow((level + 1).toDouble(), 1.4)).toInt()
+        return (type.baseCost * (level + 1).toDouble().pow(1.4)).toInt()
     }
 }
