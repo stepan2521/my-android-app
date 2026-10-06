@@ -32,9 +32,9 @@ class MainActivity : ComponentActivity() {
                     ) {
                         ClickButton(
                             modifier = Modifier
+                                .padding(top = 175.dp)
                                 .size(250.dp)
                                 .border(1.5.dp, Color.Black)
-                                .padding(0.dp, 175.dp)
                         )
                     }
                 }
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
 fun GreetingPreview() {
     MainTheme {
         Surface {
-            ClickButton(null)
+            ClickButton()
         }
     }
 }
